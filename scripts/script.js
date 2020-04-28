@@ -14,7 +14,7 @@ function addBookToLibrary(book){
 function render(library) {
     const body = document.querySelector("body");
 
-    for (let i = 0; i < library.length; i++) {
+    library.forEach((book) => {
         let bookCard = document.createElement("div");
         let bookTitle = document.createElement("h3");
         let bookAuthor = document.createElement("h4");
@@ -23,15 +23,15 @@ function render(library) {
 
         bookCard.classList.add("card");
     
-        bookTitle.textContent = library[i].title;
-        bookAuthor.textContent = library[i].author;
-        bookNumPages.textContent = library[i].numPages;
-        bookReadStatus.textContent = library[i].readStatus
+        bookTitle.textContent = book.title;
+        bookAuthor.textContent = book.author;
+        bookNumPages.textContent = book.numPages;
+        bookReadStatus.textContent = book.readStatus;
 
         bookCard.appendChild(bookTitle);
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookNumPages);
         bookCard.appendChild(bookReadStatus);
-        body.appendChild(bookCard);
-    }
+        body.appendChild(bookCard);       
+    })
 }
