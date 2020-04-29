@@ -13,16 +13,16 @@ function addBookToLibrary(book){
 
 function render(library) {
     const body = document.querySelector("body");
+    const bookCard = document.createElement("div");
+    const bookTitle = document.createElement("h3");
+    const bookAuthor = document.createElement("h4");
+    const bookNumPages = document.createElement("p");
+    const bookReadStatus = document.createElement("p");
+
+    bookCard.classList.add("card");
 
     library.forEach((book) => {
-        let bookCard = document.createElement("div");
-        let bookTitle = document.createElement("h3");
-        let bookAuthor = document.createElement("h4");
-        let bookNumPages = document.createElement("p");
-        let bookReadStatus = document.createElement("p");
 
-        bookCard.classList.add("card");
-    
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
         bookNumPages.textContent = book.numPages;
@@ -32,6 +32,7 @@ function render(library) {
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookNumPages);
         bookCard.appendChild(bookReadStatus);
-        body.appendChild(bookCard);       
-    })
+        body.appendChild(bookCard.cloneNode(true));      
+        bookCard.textContent = ""; 
+    });
 }
