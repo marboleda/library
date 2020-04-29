@@ -32,19 +32,24 @@ function render(library) {
     const bookNumPages = document.createElement("p");
     const bookReadStatus = document.createElement("p");
 
+    const indexTracker = document.createAttribute("data-booknum");
+
     bookCard.classList.add("card");
 
-    library.forEach((book) => {
+    library.forEach((book, index) => {
 
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
         bookNumPages.textContent = book.numPages;
         bookReadStatus.textContent = book.readStatus;
 
+        indexTracker.value = myLibrary.length + index;
+
         bookCard.appendChild(bookTitle);
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookNumPages);
         bookCard.appendChild(bookReadStatus);
+        bookCard.setAttributeNode(indexTracker);
         body.appendChild(bookCard.cloneNode(true));      
         bookCard.textContent = ""; 
     });
@@ -56,9 +61,9 @@ function createNewBook() {
                              newBookForm.elements["author"].value,
                              newBookForm.elements["num-pages"].value,
                              newBookForm.elements["read-status"].value);
-    myLibrary.push(newBook);
     closeNewBookForm();
     render([newBook]);
+    myLibrary.push(newBook);
 }
 
 document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
