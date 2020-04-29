@@ -8,7 +8,9 @@
 </head>
 <body>
     <h1>Library</h1>
+
     <button id="new-book-button" onclick=openNewBookForm()>NEW BOOK</button>
+
     <form action="index.html" class="popup-form">
         <h2>Enter new book information:</h2>
         <label for="title">
@@ -26,10 +28,16 @@
         <label for="read-status">
             <strong>Read?:</strong>
         </label>
-        <input type="text" name="read-status">
+        <label for="read">
+            <input id="read" type="radio" name="read-status">Read
+        </label>
+        <label for="unread">
+            <input id="unread" type="radio" name="read-status">Unread
+        </label>
         <button type="submit">Submit</button>
         <button type="submit" onclick=closeNewBookForm()>Cancel</button>
     </form>
+
     <script type="text/javascript" src="scripts/script.js"></script>
 </body>
 </html>
