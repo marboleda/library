@@ -49,3 +49,15 @@ function render(library) {
         bookCard.textContent = ""; 
     });
 }
+
+function createNewBook() {
+    const newBookForm = document.forms["new-book"];
+    const newBook = new Book(newBookForm.elements["title"].value,
+                             newBookForm.elements["author"].value,
+                             newBookForm.elements["num-pages"].value,
+                             newBookForm.elements["read-status"].value);
+    myLibrary.push(newBook);
+    render([newBook]);
+}
+
+document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
