@@ -57,6 +57,7 @@ function createNewBook() {
                              newBookForm.elements["num-pages"].value,
                              newBookForm.elements["read-status"].value);
     myLibrary.push(newBook);
+    closeNewBookForm();
     render([newBook]);
 }
 
