@@ -11,6 +11,19 @@ function addBookToLibrary(book){
     myLibrary.push(book);
 }
 
+function openNewBookForm() {
+    const form = document.querySelector(".popup-form")
+    form.style.display = "flex";
+    form.style["flex-direction"] = "column";
+}
+
+function closeNewBookForm() {
+    const form = document.querySelector(".popup-form")
+    form.style.display = "none";
+    form.style.removeProperty("flex-direction");
+
+}
+
 function render(library) {
     const body = document.querySelector("body");
     const bookCard = document.createElement("div");

@@ -9,6 +9,27 @@
 <body>
     <h1>Library</h1>
     <button id="new-book-button" onclick=openNewBookForm()>NEW BOOK</button>
+    <form action="index.html" class="popup-form">
+        <h2>Enter new book information:</h2>
+        <label for="title">
+            <strong>Title:</strong>
+        </label>
+        <input type="text" name="title" required>
+        <label for="author">
+            <strong>Author:</strong>
+        </label>
+        <input type="text" name="author" required>
+        <label for="num-pages">
+            <strong>Number of Pages:</strong>
+        </label>
+        <input type="text" name="num-pages">
+        <label for="read-status">
+            <strong>Read?:</strong>
+        </label>
+        <input type="text" name="read-status">
+        <button type="submit">Submit</button>
+        <button type="submit" onclick=closeNewBookForm()>Cancel</button>
+    </form>
     <script type="text/javascript" src="scripts/script.js"></script>
 </body>
 </html>
