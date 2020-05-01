@@ -31,13 +31,12 @@ function render(library) {
     const bookAuthor = document.createElement("h4");
     const bookNumPages = document.createElement("p");
     const bookReadStatus = document.createElement("p");
-
+    const deleteBookButton = document.createElement("button");
     const indexTracker = document.createAttribute("data-booknum");
 
     bookCard.classList.add("card");
 
     library.forEach((book, index) => {
-
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
         bookNumPages.textContent = book.numPages;
@@ -45,14 +44,27 @@ function render(library) {
 
         indexTracker.value = myLibrary.length + index;
 
+        deleteBookButton.textContent = `Delete Book ${indexTracker.value}`;
+        deleteBookButton.classList.add("deleteBookButton");
+
         bookCard.appendChild(bookTitle);
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookNumPages);
         bookCard.appendChild(bookReadStatus);
         bookCard.setAttributeNode(indexTracker);
+
+        bookCard.appendChild(deleteBookButton);
+
         body.appendChild(bookCard.cloneNode(true));      
         bookCard.textContent = ""; 
     });
+
+    document.querySelectorAll(".deleteBookButton").forEach(b => b.onclick = function() {
+        let bookIndex = b.parentElement.getAttribute("data-booknum");
+        myLibrary.splice(bookIndex,1);
+        document.querySelector(`[data-booknum='${bookIndex}'`).remove();
+    });
+
 }
 
 function createNewBook() {
