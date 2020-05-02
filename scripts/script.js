@@ -1,19 +1,25 @@
-(function() {
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyAag4T9nkpW5CPGvrAjHI8UEUeaf7y2FSo",
-    authDomain: "library-3dd00.firebaseapp.com",
-    databaseURL: "https://library-3dd00.firebaseio.com",
-    projectId: "library-3dd00",
-    storageBucket: "library-3dd00.appspot.com",
-    messagingSenderId: "1095291408969",
-    appId: "1:1095291408969:web:7fc147311d5a0d26986598"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-}());
+// Your web app's Firebase configuration
+var firebaseConfig = {
+  apiKey: "AIzaSyAag4T9nkpW5CPGvrAjHI8UEUeaf7y2FSo",
+  authDomain: "library-3dd00.firebaseapp.com",
+  databaseURL: "https://library-3dd00.firebaseio.com",
+  projectId: "library-3dd00",
+  storageBucket: "library-3dd00.appspot.com",
+  messagingSenderId: "1095291408969",
+  appId: "1:1095291408969:web:7fc147311d5a0d26986598"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
+let currentBookIndex;
 let myLibrary = [];
+
+var dbLibraryObject = firebase.database().ref().child('library');
+dbLibraryObject.on('value', snapshot => {
+  currentBookIndex = snapshot.numChildren();
+});
+
+
 
 function Book(title, author, numPages, readStatus) {
     this.title = title;
@@ -104,8 +110,7 @@ function writeNewBook() {
                              newBookForm.elements["num-pages"].value,
                              newBookForm.elements["read-status"].value);
     closeNewBookForm();
-    render([newBook]);
-    firebase.database().ref("/library/").push(newBook);
+    firebase.database().ref("/library/book" + currentBookIndex).set(newBook);
 }
 
 document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
