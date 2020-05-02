@@ -34,7 +34,8 @@ function Book(title, author, numPages, readStatus) {
 //Add books from Firebase DB to array upon initial page load
 dbLibraryObject.once("value", snapshot => {
     snapshot.forEach(childSnapshot => {
-        myLibrary.push(childSnapshot.val());
+        myLibrary.push(new Book(childSnapshot.child("title").val(), childSnapshot.child("author").val(),
+                                childSnapshot.child("numPages").val(), childSnapshot.child("readStatus").val()));
     });
     render(myLibrary);
 })
@@ -73,7 +74,7 @@ function render(library) {
         bookReadStatus.textContent = book.readStatus;
         bookReadStatus.classList.add("read-status");
 
-        indexTracker.value = myLibrary.length + index;
+        indexTracker.value = index;
         deleteBookButton.textContent = `Delete Book ${indexTracker.value}`;
         deleteBookButton.classList.add("delete-book");
 
