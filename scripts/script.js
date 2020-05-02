@@ -1,3 +1,18 @@
+(function() {
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAag4T9nkpW5CPGvrAjHI8UEUeaf7y2FSo",
+    authDomain: "library-3dd00.firebaseapp.com",
+    databaseURL: "https://library-3dd00.firebaseio.com",
+    projectId: "library-3dd00",
+    storageBucket: "library-3dd00.appspot.com",
+    messagingSenderId: "1095291408969",
+    appId: "1:1095291408969:web:7fc147311d5a0d26986598"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+}());
+
 let myLibrary = [];
 
 function Book(title, author, numPages, readStatus) {
