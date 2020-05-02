@@ -26,8 +26,11 @@ function Book(title, author, numPages, readStatus) {
     this.numPages = numPages;
     this.readStatus = readStatus;
     
-    Book.prototype.toggleReadStatus = function() {
+    Book.prototype.toggleReadStatus = function(bookIndex) {
         this.readStatus = (this.readStatus == "read") ? "unread" : "read";
+        dbLibraryObject.child("book" + bookIndex).update(
+            {readStatus : this.readStatus}
+        );
     }
 }
 
@@ -101,7 +104,7 @@ function render(library) {
 
     document.querySelectorAll(".toggle-read-status").forEach(b => b.onclick = function() {
         let bookIndex = b.parentElement.getAttribute("data-booknum");
-        myLibrary[bookIndex].toggleReadStatus();
+        myLibrary[bookIndex].toggleReadStatus(bookIndex);
         b.parentElement.querySelector(".read-status").textContent = myLibrary[bookIndex].readStatus;
     });
 
