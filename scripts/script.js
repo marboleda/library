@@ -97,7 +97,7 @@ function render(library) {
 
 }
 
-function createNewBook() {
+function writeNewBook() {
     const newBookForm = document.forms["new-book"];
     const newBook = new Book(newBookForm.elements["title"].value,
                              newBookForm.elements["author"].value,
@@ -105,7 +105,7 @@ function createNewBook() {
                              newBookForm.elements["read-status"].value);
     closeNewBookForm();
     render([newBook]);
-    myLibrary.push(newBook);
+    firebase.database().ref("/library/").push(newBook);
 }
 
 document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
