@@ -11,12 +11,12 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-let currentBookIndex;
+let currentBookNum;
 let myLibrary = [];
 
 var dbLibraryObject = firebase.database().ref().child('library');
 dbLibraryObject.on('value', snapshot => {
-  currentBookIndex = snapshot.numChildren();
+  currentBookNum = snapshot.numChildren() + 1;
 });
 
 
@@ -65,8 +65,6 @@ function render(library) {
     const bookReadStatus = document.createElement("p");
     const deleteBookButton = document.createElement("button");
     const toggleReadStatusButton = document.createElement("button");
-    const indexTracker = document.createAttribute("data-booknum");
-
     bookCard.classList.add("card");
 
     library.forEach((book, index) => {
@@ -77,8 +75,7 @@ function render(library) {
         bookReadStatus.textContent = book.readStatus;
         bookReadStatus.classList.add("read-status");
 
-        indexTracker.value = index;
-        deleteBookButton.textContent = `Delete Book ${indexTracker.value}`;
+        deleteBookButton.textContent = "Delete Book";
         deleteBookButton.classList.add("delete-book");
 
         toggleReadStatusButton.textContent = "Toggle Read\\Unread";
@@ -88,12 +85,21 @@ function render(library) {
         bookCard.appendChild(bookAuthor);
         bookCard.appendChild(bookNumPages);
         bookCard.appendChild(bookReadStatus);
-        bookCard.setAttributeNode(indexTracker);
         bookCard.appendChild(deleteBookButton);
         bookCard.appendChild(toggleReadStatusButton);
 
         body.appendChild(bookCard.cloneNode(true));      
         bookCard.textContent = ""; 
+    });
+
+    recalibrateBookNumbers();
+}
+
+function recalibrateBookNumbers() {
+    document.querySelectorAll(".card").forEach((card, index) => {
+        let indexTracker = document.createAttribute("data-booknum");
+        indexTracker.value = index;
+        card.setAttributeNode(indexTracker);
     });
 
     document.querySelectorAll(".delete-book").forEach(b => b.onclick = function() {
@@ -107,7 +113,6 @@ function render(library) {
         myLibrary[bookIndex].toggleReadStatus(bookIndex);
         b.parentElement.querySelector(".read-status").textContent = myLibrary[bookIndex].readStatus;
     });
-
 }
 
 function writeNewBook() {
@@ -117,7 +122,9 @@ function writeNewBook() {
                              newBookForm.elements["num-pages"].value,
                              newBookForm.elements["read-status"].value);
     closeNewBookForm();
-    firebase.database().ref("/library/book" + currentBookIndex).set(newBook);
+    firebase.database().ref("/library/book" + currentBookNum).set(newBook);
+    myLibrary.push(newBook);
+    render([newBook]);
 }
 
 document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
