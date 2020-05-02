@@ -20,7 +20,6 @@ dbLibraryObject.on('value', snapshot => {
 });
 
 
-
 function Book(title, author, numPages, readStatus) {
     this.title = title;
     this.author = author;
@@ -32,9 +31,13 @@ function Book(title, author, numPages, readStatus) {
     }
 }
 
-function addBookToLibrary(book){
-    myLibrary.push(book);
-}
+//Add books from Firebase DB to array upon initial page load
+dbLibraryObject.once("value", snapshot => {
+    snapshot.forEach(childSnapshot => {
+        myLibrary.push(childSnapshot.val());
+    });
+    render(myLibrary);
+})
 
 function openNewBookForm() {
     const form = document.querySelector(".popup-form")
