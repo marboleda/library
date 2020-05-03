@@ -20,11 +20,12 @@ dbLibraryRef.on('value', snapshot => {
 });
 
 
-function Book(title, author, numPages, readStatus) {
+function Book(title, author, numPages, readStatus, bookID) {
     this.title = title;
     this.author = author;
     this.numPages = numPages;
     this.readStatus = readStatus;
+    this.bookID = bookID;
     
     Book.prototype.toggleReadStatus = function(bookIndex) {
         this.readStatus = (this.readStatus == "read") ? "unread" : "read";
@@ -38,7 +39,8 @@ function Book(title, author, numPages, readStatus) {
 dbLibraryRef.once("value", snapshot => {
     snapshot.forEach(childSnapshot => {
         myLibrary.push(new Book(childSnapshot.child("title").val(), childSnapshot.child("author").val(),
-                                childSnapshot.child("numPages").val(), childSnapshot.child("readStatus").val()));
+                                childSnapshot.child("numPages").val(), childSnapshot.child("readStatus").val(),
+                                childSnapshot.child("bookID").val()));
     });
     render(myLibrary);
 })
@@ -98,7 +100,7 @@ function render(library) {
 function recalibrateBookNumbers() {
     document.querySelectorAll(".card").forEach((card, index) => {
         let indexTracker = document.createAttribute("data-booknum");
-        indexTracker.value = index;
+        indexTracker.value = myLibrary[index].bookID;
         card.setAttributeNode(indexTracker);
     });
 
@@ -122,12 +124,24 @@ function writeNewBook() {
     const newBook = new Book(newBookForm.elements["title"].value,
                              newBookForm.elements["author"].value,
                              newBookForm.elements["num-pages"].value,
-                             newBookForm.elements["read-status"].value);
+                             newBookForm.elements["read-status"].value,
+                             null);
     closeNewBookForm();
+
+    console.log(newBook);
+
     firebase.database().ref("/library").limitToLast(1).on("child_added", snapshot => {
         keyOfLastChild = snapshot.key;
-    })
-    firebase.database().ref("library/book" + (Number(keyOfLastChild.slice(-1)) + 1)).set(newBook);
+    });
+
+    if (keyOfLastChild === undefined) {
+        newBook.bookID = 0;
+        firebase.database().ref("library/book0").set(newBook);       
+    } else {
+        newBook.bookID = keyOfLastChild.slice(-1) + 1;
+        firebase.database().ref("library/book" + (Number(keyOfLastChild.slice(-1)) + 1)).set(newBook);
+    }
+    
     myLibrary.push(newBook);
     document.getElementById("library").innerHTML = "";
     render(myLibrary);
