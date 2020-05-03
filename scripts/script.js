@@ -14,9 +14,9 @@ firebase.initializeApp(firebaseConfig);
 let currentBookNum;
 let myLibrary = [];
 
-var dbLibraryObject = firebase.database().ref().child('library');
-dbLibraryObject.on('value', snapshot => {
-  currentBookNum = snapshot.numChildren() + 1;
+var dbLibraryRef = firebase.database().ref().child('library');
+dbLibraryRef.on('value', snapshot => {
+  currentBookNum = snapshot.numChildren();
 });
 
 
@@ -28,14 +28,14 @@ function Book(title, author, numPages, readStatus) {
     
     Book.prototype.toggleReadStatus = function(bookIndex) {
         this.readStatus = (this.readStatus == "read") ? "unread" : "read";
-        dbLibraryObject.child("book" + bookIndex).update(
+        dbLibraryRef.child("book" + bookIndex).update(
             {readStatus : this.readStatus}
         );
     }
 }
 
 //Add books from Firebase DB to array upon initial page load
-dbLibraryObject.once("value", snapshot => {
+dbLibraryRef.once("value", snapshot => {
     snapshot.forEach(childSnapshot => {
         myLibrary.push(new Book(childSnapshot.child("title").val(), childSnapshot.child("author").val(),
                                 childSnapshot.child("numPages").val(), childSnapshot.child("readStatus").val()));
@@ -57,7 +57,7 @@ function closeNewBookForm() {
 }
 
 function render(library) {
-    const body = document.querySelector("body");
+    const libraryElement = document.getElementById("library");
     const bookCard = document.createElement("div");
     const bookTitle = document.createElement("h3");
     const bookAuthor = document.createElement("h4");
@@ -88,7 +88,7 @@ function render(library) {
         bookCard.appendChild(deleteBookButton);
         bookCard.appendChild(toggleReadStatusButton);
 
-        body.appendChild(bookCard.cloneNode(true));      
+        libraryElement.appendChild(bookCard.cloneNode(true));      
         bookCard.textContent = ""; 
     });
 
@@ -106,6 +106,7 @@ function recalibrateBookNumbers() {
         let bookIndex = b.parentElement.getAttribute("data-booknum");
         myLibrary.splice(bookIndex,1);
         document.querySelector(`[data-booknum='${bookIndex}'`).remove();
+        dbLibraryRef.child("book" + bookIndex).remove();
     });
 
     document.querySelectorAll(".toggle-read-status").forEach(b => b.onclick = function() {
@@ -116,15 +117,20 @@ function recalibrateBookNumbers() {
 }
 
 function writeNewBook() {
+    let keyOfLastChild;
     const newBookForm = document.forms["new-book"];
     const newBook = new Book(newBookForm.elements["title"].value,
                              newBookForm.elements["author"].value,
                              newBookForm.elements["num-pages"].value,
                              newBookForm.elements["read-status"].value);
     closeNewBookForm();
-    firebase.database().ref("/library/book" + currentBookNum).set(newBook);
+    firebase.database().ref("/library").limitToLast(1).on("child_added", snapshot => {
+        keyOfLastChild = snapshot.key;
+    })
+    firebase.database().ref("library/book" + (Number(keyOfLastChild.slice(-1)) + 1)).set(newBook);
     myLibrary.push(newBook);
-    render([newBook]);
+    document.getElementById("library").innerHTML = "";
+    render(myLibrary);
 }
 
 document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
