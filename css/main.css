@@ -1,3 +1,37 @@
+body {
+    height: 100%;
+    margin: 0;
+    background-image: url(../images/library_background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1 {
+    display: block;
+    text-align: center;
+    background-color: #654321;
+    margin-top: 0;
+    padding: 0.2rem;
+    border-bottom: solid black;
+}
+
+#new-book-button {
+    display: block;
+    margin: 0 auto;
+}
+
 .popup-form {
     display: none;
+    width: 40vw;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    width: 30vw;
+    background-color: white;
 }
