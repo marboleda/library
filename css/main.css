@@ -5,6 +5,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    background-attachment: fixed;
 }
 
 h1 {
@@ -25,7 +26,7 @@ h1 {
     display: none;
     width: 40vw;
     margin: 0 auto;
-    background-color: white;
+    background-color: #d0c8b0;
 }
 
 .card {
@@ -33,5 +34,7 @@ h1 {
     flex-direction: column;
     margin: 10px auto;
     width: 30vw;
-    background-color: white;
+    background-color: #d0c8b0;
+    border-radius: 20px;
+    padding: 10px;
 }
