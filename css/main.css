@@ -32,8 +32,14 @@ h4 {
 
 .popup-form {
     display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -75%);
+    border: thick solid #654321;
     width: 40vw;
     margin: 0 auto;
+    padding: 10px;
     background-color: #d0c8b0;
 }
 
