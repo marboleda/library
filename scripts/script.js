@@ -148,3 +148,11 @@ function writeNewBook() {
 }
 
 document.querySelector(".popup-form").addEventListener("submit", e => e.preventDefault());
+
+//Prevent non-numeric characters from being entered into number of pages
+document.getElementById("num-pages").onkeypress = e => {
+    if (!Number.isInteger(Number(e.key))) {
+        return false;
+    }
+    return true;
+};
