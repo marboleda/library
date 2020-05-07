@@ -72,7 +72,7 @@ function render(library) {
     library.forEach((book, index) => {
         bookTitle.textContent = book.title;
         bookAuthor.textContent = book.author;
-        bookNumPages.textContent = book.numPages;
+        bookNumPages.textContent = `Pages: ${book.numPages}`;
 
         bookReadStatus.textContent = book.readStatus;
         bookReadStatus.classList.add("read-status");
