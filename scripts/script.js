@@ -112,9 +112,13 @@ function recalibrateBookNumbers() {
     });
 
     document.querySelectorAll(".toggle-read-status").forEach(b => b.onclick = function() {
-        let bookIndex = b.parentElement.getAttribute("data-booknum");
-        myLibrary[bookIndex].toggleReadStatus(bookIndex);
-        b.parentElement.querySelector(".read-status").textContent = myLibrary[bookIndex].readStatus;
+        let bookID = b.parentElement.getAttribute("data-booknum");
+        myLibrary.forEach(book => {
+            if (book.bookID == bookID) {
+                book.toggleReadStatus(bookID);
+                b.parentElement.querySelector(".read-status").textContent = book.readStatus;
+            }
+        });
     });
 }
 
