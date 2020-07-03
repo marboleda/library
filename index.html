@@ -14,7 +14,7 @@
 
     <button id="new-book-button" onclick=openNewBookForm()>NEW BOOK</button>
 
-    <form action="" class="popup-form" name="new-book">
+    <form action="" class="popup-form" name="new-book" onsubmit=writeNewBook()>
         <h2>Enter new book information:</h2>
         <label for="title">
             <strong>Title:</strong>
@@ -37,7 +37,7 @@
         <label for="unread">
             <input value="unread" type="radio" name="read-status">Unread
         </label>
-        <button type="submit" onsubmit=writeNewBook()>Submit</button>
+        <button type="submit">Submit</button>
         <button onclick=closeNewBookForm()>Cancel</button>
     </form>
 
