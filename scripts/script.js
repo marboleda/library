@@ -35,7 +35,7 @@ function Book(title, author, numPages, readStatus, bookID) {
   }
 }
 
-//Add books from Firebase DB to array upon initial page load
+// Add books from Firebase DB to array upon initial page load
 dbLibraryRef.once('value', snapshot => {
   snapshot.forEach(childSnapshot => {
     myLibrary.push(new Book(childSnapshot.child('title').val(), childSnapshot.child('author').val(),
@@ -131,8 +131,6 @@ function writeNewBook() {
     newBookForm.elements['read-status'].value,
     null);
   closeNewBookForm();
-
-  console.log(newBook);
 
   firebase.database().ref('/library').limitToLast(1).on('child_added', snapshot => {
     keyOfLastChild = snapshot.key;
