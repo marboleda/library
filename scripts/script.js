@@ -1,5 +1,5 @@
 // Your web app's Firebase configuration
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: "AIzaSyAag4T9nkpW5CPGvrAjHI8UEUeaf7y2FSo",
   authDomain: "library-3dd00.firebaseapp.com",
   databaseURL: "https://library-3dd00.firebaseio.com",
@@ -12,9 +12,9 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 let currentBookNum;
-let myLibrary = [];
+const myLibrary = [];
 
-var dbLibraryRef = firebase.database().ref().child('library');
+const dbLibraryRef = firebase.database().ref().child('library');
 dbLibraryRef.on('value', snapshot => {
   currentBookNum = snapshot.numChildren();
 });
@@ -99,20 +99,20 @@ function render(library) {
 
 function recalibrateBookNumbers() {
     document.querySelectorAll(".card").forEach((card, index) => {
-        let indexTracker = document.createAttribute("data-booknum");
+        const indexTracker = document.createAttribute("data-booknum");
         indexTracker.value = myLibrary[index].bookID;
         card.setAttributeNode(indexTracker);
     });
 
     document.querySelectorAll(".delete-book").forEach(b => b.onclick = function() {
-        let bookIndex = b.parentElement.getAttribute("data-booknum");
+        const bookIndex = b.parentElement.getAttribute("data-booknum");
         myLibrary.splice(bookIndex,1);
         document.querySelector(`[data-booknum='${bookIndex}'`).remove();
         dbLibraryRef.child("book" + bookIndex).remove();
     });
 
     document.querySelectorAll(".toggle-read-status").forEach(b => b.onclick = function() {
-        let bookID = b.parentElement.getAttribute("data-booknum");
+        const bookID = b.parentElement.getAttribute("data-booknum");
         myLibrary.forEach(book => {
             if (book.bookID == bookID) {
                 book.toggleReadStatus(bookID);
