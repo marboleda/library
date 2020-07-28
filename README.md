@@ -1,6 +1,8 @@
 ## Library
 A library app that stores metadata on books
 
+Demo: [Link](https://marboleda.github.io/library/)
+
 ## Used
 - HTML
 - CSS
